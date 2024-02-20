@@ -18,17 +18,17 @@ const Authmiddleware = ({
   const Layout = layout;
   const Component = component;
 
-  const tokenValid = () => {
-    const access_token = getItem("access_token");
-    if (access_token.length) {
+  const isTokenValid = () => {
+    const accessToken = getItem("access_token");
+    if (accessToken.length) {
       const token = getItem("access_token").split(".")[1];
-      var base64 = token.replace(/-/g, "+").replace(/_/g, "/");
-      var jsonPayload = decodeURIComponent(
+      const base64Token = token.replace(/-/g, "+").replace(/_/g, "/");
+      const jsonPayload = decodeURIComponent(
         window
-          .atob(base64)
+          .atob(base64Token)
           .split("")
-          .map(function (c) {
-            return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+          .map(function (char) {
+            return "%" + ("00" + char.charCodeAt(0).toString(16)).slice(-2);
           })
           .join("")
       );
@@ -47,12 +47,12 @@ const Authmiddleware = ({
   return (
     <Route
       render={(props: any) => {
-        if (isAuthProtected && !tokenValid()) {
+        if (isAuthProtected && !isTokenValid()) {
           return (
             <Redirect to={{ pathname: "/", state: { from: props.location } }} />
           );
         }
-        if (!isAuthProtected && tokenValid()) {
+        if (!isAuthProtected && isTokenValid()) {
           return (
             <Redirect
               to={{ pathname: "/inicio", state: { from: props.location } }}

@@ -37,7 +37,5 @@ export const useAuthStore = () => {
     }
   };
 
-  const start_logout = () => {};
-
-  return { start_login, start_logout, isLoading };
+  return { start_login, isLoading };
 };
