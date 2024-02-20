@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { withTranslation } from "react-i18next";
-import user1 from "../../assets/images/users/avatar-1.jpg";
+import user10 from "../../assets/images/users/avatar-10.png";
 import {
   Dropdown,
   DropdownToggle,
@@ -11,11 +10,13 @@ import {
 import logoSm from "../../assets/images/logo-sm.png";
 import logoDark from "../../assets/images/logo-dark.png";
 import logoLight from "../../assets/images/logo-light.png";
-import { removeItem } from "src/utility/localStorageControl";
+import { getItem, removeItem } from "src/utility/localStorageControl";
 
 const Header = () => {
   const history = useHistory();
+  const user = getItem("user");
   const [menu, setMenu] = useState(false);
+
   function tToggle() {
     var body = document.body;
     if (window.screen.width <= 998) {
@@ -26,8 +27,7 @@ const Header = () => {
 
   const handleLogout = () => {
     removeItem("access_token");
-    removeItem("userId");
-    removeItem("isLoggedIn");
+    removeItem("user");
     history.push("/inicio");
   };
 
@@ -81,12 +81,14 @@ const Header = () => {
               >
                 <img
                   className="rounded-circle header-profile-user"
-                  src={user1}
+                  src={user10}
                   alt="Header Avatar"
                 />
                 <span className="ms-2 d-none d-sm-block user-item-desc">
-                  <span className="user-name">Bruno Alexander</span>
-                  <span className="user-sub-title">Administrator</span>
+                  <span className="user-name">
+                    {user.name} {user.lastname}
+                  </span>
+                  <span className="user-sub-title">{user.email}</span>
                 </span>
               </DropdownToggle>
               <DropdownMenu className="dropdown-menu-end py-0" dir="left">

@@ -64,7 +64,7 @@ export const Login = () => {
                     onClick={handleSubmit}
                     disabled={isLoading}
                   >
-                    {isLoading ? "......" : "Iniciar sesión"}
+                    {isLoading ? "... Cargando" : "Iniciar sesión"}
                   </Button>
                 </form>
               </Col>

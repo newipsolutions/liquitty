@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { AuthService } from "src/config/dataService/authService";
 import { ApiRoutes } from "src/utility/apiRoutes";
@@ -12,7 +11,6 @@ interface IUserLogin {
 }
 
 export const useAuthStore = () => {
-  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const optional_header = {
     account: 1,
@@ -31,31 +29,15 @@ export const useAuthStore = () => {
       setIsLoading(false);
       if (response.status == 201) {
         setItem("access_token", token.accessToken);
-        setItem("userId", user.userId);
-        setItem("isLoggedIn", "true");
+        setItem("user", user);
         history.push("/inicio");
-      } else {
       }
     } catch (error) {
       console.log("Ha surgido un error. Porfavor intentelo de nuevo");
     }
   };
 
-  const start_logout = () => {
-    // dispatch(on_logout_begin());
-    // try {
-    //   removeItem("access_token");
-    //   dispatch(
-    //     on_user_data_success({
-    //       name: "User",
-    //       lastname: "",
-    //     })
-    //   );
-    //   dispatch(on_logout_success());
-    // } catch (error) {
-    //   console.log("Ha surgido un error. Porfavor intentelo de nuevo");
-    // }
-  };
+  const start_logout = () => {};
 
   return { start_login, start_logout, isLoading };
 };

@@ -1,6 +1,6 @@
 const getItem = (key: string) => {
   const data: any =
-    typeof window !== "undefined" ? localStorage.getItem(key) : "";
+    localStorage.getItem(key) == undefined ? "" : localStorage.getItem(key);
 
   try {
     return JSON.parse(data);
