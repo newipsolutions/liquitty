@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { Container, Row, Col } from "reactstrap";
 
 const Footer = () => {
@@ -8,11 +7,11 @@ const Footer = () => {
       <footer className="footer">
         <Container fluid={true}>
           <Row>
-            <Col md={6}>{new Date().getFullYear()} © Dashonic.</Col>
+            <Col md={6}>{new Date().getFullYear()} © Liquity.</Col>
             <Col md={6}>
               <div className="text-sm-end d-none d-sm-block">
-                    Crafted with <i className="mdi mdi-heart text-danger"></i> by <Link to="https://Pichforest.com/" target="_blank" rel="noreferrer" className="text-reset">Pichforest</Link>
-                </div>
+                Desarrollado por Newip
+              </div>
             </Col>
           </Row>
         </Container>

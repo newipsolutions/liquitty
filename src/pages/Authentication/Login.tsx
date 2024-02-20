@@ -1,70 +1,28 @@
+import React, { ChangeEvent, useState } from "react";
 import MetaTags from "react-meta-tags";
-import React from "react";
+import { Button, Col, Container, Row } from "reactstrap";
+import { useAuthStore } from "src/hooks/Authentication/useAuthenticationStore";
 
-import { Row, Col, Alert, Container } from "reactstrap";
+export const Login = () => {
+  const { isLoading, start_login } = useAuthStore();
+  const [form, setForm] = useState({
+    username: "",
+    password: "",
+  });
 
-//redux
-import { useSelector, useDispatch } from "react-redux";
-
-import { withRouter, Link } from "react-router-dom";
-
-// availity-reactstrap-validation
-import { AvForm, AvField } from "availity-reactstrap-validation";
-
-//Social Media Imports
-import { GoogleLogin } from "react-google-login";
-
-import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
-
-// actions
-import { loginUser, socialLogin } from "../../slices/thunks";
-
-//import images
-import logoDark from "../../assets/images/logo-dark.png";
-import logoLight from "../../assets/images/logo-light.png";
-
-interface LoginProps {
-  history: any;
-}
-
-const Login = ({ history }: LoginProps) => {
-  const dispatch = useDispatch();
-
-  const { error } = useSelector((state: any) => ({
-    error: state.login.error,
-  }));
-
-  // handleValidSubmit
-  const handleValidSubmit = (event: any, values: any) => {
-    dispatch(loginUser(values, history));
+  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { target } = event;
+    const { name, value } = target;
+    setForm({ ...form, [name]: value });
   };
 
-  const signIn = (res: any, type: any) => {
-    if (type === "google" && res) {
-      const postData = {
-        name: res.profileObj.name,
-        email: res.profileObj.email,
-        token: res.tokenObj.access_token,
-        idToken: res.tokenId,
-      };
-      dispatch(socialLogin(postData, history, type));
-    } else if (type === "facebook" && res) {
-      const postData = {
-        name: res.name,
-        token: res.accessToken,
-      };
-      dispatch(socialLogin(postData, history, type));
-    }
-  };
-
-  //handleGoogleLoginResponse
-  const googleResponse = (response: Object) => {
-    signIn(response, "google");
-  };
-
-  //handleFacebookLoginResponse
-  const facebookResponse = (response: Object) => {
-    signIn(response, "facebook");
+  const handleSubmit = () => {
+    const data = {
+      grant_type: "password",
+      username: form.username,
+      password: form.password,
+    };
+    start_login(data);
   };
 
   return (
@@ -75,123 +33,53 @@ const Login = ({ history }: LoginProps) => {
       <div className="authentication-bg min-vh-100">
         <div className="bg-overlay bg-white"></div>
         <Container>
-          <div className="d-flex flex-column min-vh-100 px-3 pt-4">
+          <div className="d-flex flex-column min-vh-100 py-2">
             <Row className="justify-content-center my-auto">
               <Col md={8} lg={6} xl={4}>
-
-                <div className="py-5">
-                  <div className="mb-4 mb-md-5 text-center">
-                    <Link to="/sales" className="d-block auth-logo">
-                      <img src={logoDark} alt="" height="22" className="auth-logo-dark" />
-                      <img src={logoLight} alt="" height="22" className="auth-logo-light" />
-                    </Link>
+                <form className="d-flex flex-column gap-4">
+                  <div className="d-flex flex-column gap-1">
+                    <label className="mb-0">Usuario</label>
+                    <input
+                      className="form-control"
+                      placeholder="Ingrese su usuario"
+                      name="username"
+                      value={form.username}
+                      onChange={handleOnChange}
+                    />
                   </div>
-                  <div className="text-center mb-4">
-                    <h5>Welcome Back !</h5>
-                    <p>Sign in to continue to Dashonic.</p>
+                  <div className="d-flex flex-column gap-1">
+                    <label className="mb-0">Contraseña</label>
+                    <input
+                      className="form-control"
+                      placeholder="Ingrese su contraseña"
+                      name="password"
+                      value={form.password}
+                      onChange={handleOnChange}
+                    />
                   </div>
-                  <AvForm
-                    onValidSubmit={(e: any, v: any) => {
-                      handleValidSubmit(e, v);
-                    }}
+                  <Button
+                    color="primary"
+                    type="submit"
+                    className="w-100"
+                    onClick={handleSubmit}
+                    disabled={isLoading}
                   >
-                    {error ? <Alert color="danger">{error}</Alert> : null}
-                    <div className="form-floating form-floating-custom mb-3">
-                      <AvField
-                        name="email"
-                        label="Email"
-                        value="admin@themesbrand.com"
-                        className="form-control"
-                        placeholder="Enter email"
-                        type="email"
-                        required
-                      />
-                    </div>
-                    <div className="form-floating form-floating-custom mb-3">
-                      <AvField
-                        name="password"
-                        label="password"
-                        value="123456"
-                        type="password"
-                        className="form-control"
-                        required
-                        placeholder="Enter Password"
-                      />
-                    </div>
-                    <div className="form-check form-check-info font-size-16">
-                      <input className="form-check-input" type="checkbox" id="remember-check" />
-                      <label className="form-check-label font-size-14" htmlFor="remember-check">
-                        Remember me
-                      </label>
-                    </div>
-
-                    <div className="mt-3">
-                      <button className="btn btn-info w-100" type="submit">Log In</button>
-                    </div>
-
-                    <div className="mt-4 text-center">
-                      <h5 className="font-size-14 mb-3">Sign in with</h5>
-
-                      <ul className="list-inline">
-                        <li className="list-inline-item">
-                          <FacebookLogin
-                            appId="" // Enter Your Facebook AppID
-                            autoLoad={false}
-                            callback={facebookResponse}
-                            render={(renderProps: any) => (
-                              <Link
-                                to="#"
-                                className="social-list-item bg-primary text-white border-primary"
-                                onClick={renderProps.onClick}
-                              >
-                                <i className="mdi mdi-facebook" />
-                              </Link>
-                            )}
-                          />
-                        </li>
-
-                        <li className="list-inline-item">
-                          <GoogleLogin
-                            clientId="" // Enter Your Client ID
-                            render={renderProps => (
-                              <Link
-                                to="#"
-                                className="social-list-item bg-danger text-white border-danger"
-                                onClick={renderProps.onClick}
-                              >
-                                <i className="mdi mdi-google" />
-                              </Link>
-                            )}
-                            onSuccess={googleResponse}
-                            onFailure={() => { }}
-                          />
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div className="mt-4 text-center"><Link className="text-muted" to="/forgot-password"><i className="mdi mdi-lock me-1"></i> Forgot your password?</Link></div>
-
-                  </AvForm>
-
-                  <div className="mt-5 text-center text-muted">
-                    <p>Don&apos;t have an account ? <Link to="/register" className="fw-medium text-decoration-underline"> Signup </Link></p>
-                  </div>
-                </div>
+                    {isLoading ? "......" : "Iniciar sesión"}
+                  </Button>
+                </form>
               </Col>
             </Row>
-
             <Row>
-              <Col xl="12">
-                <div className="text-center text-muted p-4">
-                  <p className="mb-0">&copy;{new Date().getFullYear()} Dashonic. Crafted with <i className="mdi mdi-heart text-danger"></i> by Pichforest</p>
-                </div>
+              <Col xl={12}>
+                <p className="text-center mb-0">
+                  &copy;{new Date().getFullYear()} Created with{" "}
+                  <i className="mdi mdi-heart text-danger"></i> by New Ip
+                </p>
               </Col>
             </Row>
-
           </div>
         </Container>
-      </div></React.Fragment>
+      </div>
+    </React.Fragment>
   );
 };
-
-export default withRouter(Login);
