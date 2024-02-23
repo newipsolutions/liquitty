@@ -5,6 +5,7 @@ import Authmiddleware from "./routes/middleware/Authmiddleware";
 import VerticalLayout from "./components/VerticalLayout/";
 import NonAuthLayout from "./components/NonAuthLayout";
 import "./assets/scss/theme.scss";
+import "./tailwind.css";
 
 const App = () => {
   return (
