@@ -12,14 +12,26 @@ import "./style.scss";
 import "../layout.scss";
 
 export const Login = () => {
+  const [height, setHeight] = useState(window.innerHeight);
   const { isLoading, isError, start_login, setIsError } = useAuthStore();
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({
     username: "",
     password: "",
   });
-
   const isValid = form.password.length > 0 && form.username.length > 0;
+
+  useEffect(() => {
+    const handleResize = () => {
+      setHeight(window.innerHeight);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
@@ -38,31 +50,12 @@ export const Login = () => {
     start_login(data);
   };
 
-  const [height, setHeight] = useState(window.innerHeight);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setHeight(window.innerHeight);
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
   return (
     <React.Fragment>
       <MetaTags>
         <title>Login | Dashonic - React Admin & Dashboard Template</title>
       </MetaTags>
-      {/* <div
-        className="App"
-        style={{ height: `${height}px`, backgroundColor: "red" }}
-      >
-      </div> */}
-      <div className="layout-container">
+      <div className="layout-container" style={{ minHeight: `${height}px` }}>
         <div className="portada-container">
           <img src={FondoLg} className="portada-lg" />
           <img src={FondoSm} className="portada-sm" />
