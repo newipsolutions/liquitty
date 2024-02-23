@@ -109,7 +109,7 @@ export const Login = () => {
             )}
             <div className="form-options">
               <div className="remember-user">
-                <input type="checkbox" />
+                <input type="checkbox" style={{ border: "1px solid red" }} />
                 <p className="tw-leading-5 tw-m-0">Recordar usuario</p>
               </div>
               <p className="recover-password">Recuperar contraseña</p>
@@ -123,7 +123,7 @@ export const Login = () => {
                     <div className="spinner"></div>
                   </div>
                 ) : (
-                  "iniciar sesión"
+                  "Iniciar Sesión"
                 )}
               </button>
             </div>
