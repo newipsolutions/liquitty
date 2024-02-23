@@ -1,5 +1,5 @@
 import { Redirect } from "react-router-dom";
-import { Login } from "src/pages/Authentication/Login";
+import { Login } from "src/pages/Authentication/Login/Login";
 import { Initial } from "src/pages/Initial/Initial";
 import { ReporteAsistencia } from "src/pages/Reports/ReporteAsistencia/ReporteAsistencia";
 
