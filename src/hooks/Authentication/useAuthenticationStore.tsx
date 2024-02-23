@@ -12,6 +12,8 @@ interface IUserLogin {
 
 export const useAuthStore = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+
   const optional_header = {
     account: 1,
   };
@@ -28,14 +30,17 @@ export const useAuthStore = () => {
       const { token, user } = response.data;
       setIsLoading(false);
       if (response.status == 201) {
+        setIsError(false);
         setItem("access_token", token.accessToken);
         setItem("user", user);
         history.push("/inicio");
+      } else {
+        setIsError(true);
       }
     } catch (error) {
       console.log("Ha surgido un error. Porfavor intentelo de nuevo");
     }
   };
 
-  return { start_login, isLoading };
+  return { start_login, isLoading, isError, setIsError };
 };
