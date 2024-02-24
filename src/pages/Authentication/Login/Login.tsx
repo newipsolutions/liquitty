@@ -57,6 +57,7 @@ export const Login = () => {
       </MetaTags>
       <div className="layout-container" style={{ minHeight: `${height}px` }}>
         <div className="portada-container">
+          <div className="background-portada"></div>
           <img src={FondoLg} className="portada-lg" />
           <img src={FondoSm} className="portada-sm" />
         </div>
